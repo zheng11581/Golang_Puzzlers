@@ -1,16 +1,16 @@
 package main
 
-import (
-	"flag"
-)
+// import (
+// 	"flag"
+// )
 
-var name string
+// var name string
 
-func init() {
-	flag.StringVar(&name, "name", "everyone", "The greeting object.")
-}
+// func init() {
+// 	flag.StringVar(&name, "name", "everyone", "The greeting object.")
+// }
 
-func main() {
-	flag.Parse()
-	hello(name)
-}
+// func main() {
+// 	flag.Parse()
+// 	hello(name)
+// }
