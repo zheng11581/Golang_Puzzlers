@@ -26,13 +26,13 @@ func example1() {
 	// 哪个通道能接收到数据就执行哪个打印
 	select {
 	case <-intChannels[0]:
-		fmt.Println("The first candidateis selected")
+		fmt.Println("The first candidate is case selected")
 	case <-intChannels[1]:
-		fmt.Println("The secend candidate is selected")
+		fmt.Println("The secend candidate case is selected!")
 	case <-intChannels[2]:
-		fmt.Println("The third candidata is selected")
+		fmt.Println("The third candidata case is selected!")
 	default:
-		fmt.Println("No candidate is selected")
+		fmt.Println("No candidate case is selected!")
 
 	}
 
@@ -48,10 +48,13 @@ func example2() {
 	select {
 	case _, ok := <-intChan:
 		if !ok {
-			fmt.Println("The channel is closed")
+			fmt.Println("The channel is closed!")
 			break
 		}
-		fmt.Println("The channel is not closed")
+		fmt.Println("The channel is not closed!")
+		// 没有默认分支，那么如果所有case 表达式都不满足条件，则select语句阻塞
+		// default:
+		// 	fmt.Println("The select will not blocked!")
 	}
 
 }
