@@ -24,4 +24,15 @@ func main() {
 	case value4[4], value4[5], value4[6]:
 		fmt.Println("4 or 5 or 6")
 	}
+
+	// 实例3
+	// value6 := interface{}(byte(127))
+	// switch t := value6.(type) {
+	// case uint8, uint16: // 编译无法通过，case 子表达式: uint8 byte不能重复
+	// 	fmt.Println("uint8 or uint16")
+	// case byte:
+	// 	fmt.Println("byte")
+	// default:
+	// 	fmt.Printf("Unsupport type: %T", t)
+	// }
 }
