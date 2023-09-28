@@ -9,10 +9,10 @@ func main() {
 	num := 10
 	sign := make(chan struct{}, num)
 	for i := 0; i < 10; i++ {
-		go func() { // go函数执行会明显滞后于go语句
+		go func(i int) { // go函数执行会明显滞后于go语句
 			fmt.Println(i)
 			sign <- struct{}{}
-		}()
+		}(i)
 	}
 
 	// 方法1 sleep阻塞主goroutin，等待go函数执行完
