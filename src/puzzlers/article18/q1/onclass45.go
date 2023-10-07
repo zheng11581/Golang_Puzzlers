@@ -48,8 +48,47 @@ func main() {
 		err = underlyingError(err)
 		switch err {
 		case os.ErrClosed:
-			fmt.Printf("error ")
+			fmt.Printf("error(closed)[%d]: %s\n", i, err)
+		case os.ErrInvalid:
+			fmt.Printf("error(invalid)[%d]: %s\n", i, err)
+		case os.ErrPermission:
+			fmt.Printf("error(permission)[%d]: %s\n", i, err)
 		}
 	}
+
+	var f *os.File
+	var index int
+	{
+		index = 0
+		f, err = os.Open(paths[index])
+		if err != nil {
+			fmt.Printf("unexpected error: %s\n", err)
+			return
+		}
+		f.Close() // 人为制造 os.ErrClosed 错误
+		_, err = f.Read([]byte{})
+		printError(index, err)
+	}
+
+	{
+		index = 1
+		// 人为制造 os.ErrInvalid 错误
+		f, _ = os.Open(paths[index])
+		_, err = f.Stat()
+		printError(index, err)
+
+	}
+
+	{
+		index = 2
+		// 人为制造潜在错误为 os.ErrPermission 的错误。
+		_, err = exec.LookPath(paths[index])
+		printError(index, err)
+	}
+
+	if f != nil {
+		f.Close()
+	}
+	fmt.Println()
 
 }
