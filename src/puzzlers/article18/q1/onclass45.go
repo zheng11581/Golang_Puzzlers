@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"runtime"
 )
 
 func underlyingError(err error) error {
@@ -32,12 +33,13 @@ func main() {
 	uError := underlyingError(err)
 	fmt.Printf("underlying error: %s (type: %T)\n", uError, uError)
 	r.Close()
+	fmt.Println()
 
 	// 示例2
 	paths := []string{
-		os.Args[0], //
-		"/it/must/not/exist",
-		os.DevNull,
+		os.Args[0],           //当前源码文件或可执行文件
+		"/it/must/not/exist", //肯定不存在的目录
+		os.DevNull,           //肯定存在的目录
 	}
 
 	printError := func(i int, err error) {
@@ -91,4 +93,50 @@ func main() {
 	}
 	fmt.Println()
 
+	// 示例3
+	paths2 := []string{
+		runtime.GOROOT(),
+		"/must/not/exist",
+		os.DevNull,
+	}
+
+	printError2 := func(i int, err error) {
+		if err == nil {
+			fmt.Println("nil error")
+			return
+		}
+		err = underlyingError(err)
+		if os.IsExist(err) {
+			fmt.Printf("error(exist)[%d]: %s\n", i, err)
+		} else if os.IsNotExist(err) {
+			fmt.Printf("error(not exist)[%d]: %s\n", i, err)
+		} else if os.IsPermission(err) {
+			fmt.Printf("error(permission)[%d]: %s\n", i, err)
+		} else {
+			fmt.Printf("error(other)[%d]: %s\n", i, err)
+		}
+
+	}
+
+	{
+		index = 0
+		err = os.Mkdir(paths2[index], 0700)
+		printError2(index, err)
+	}
+
+	{
+		index = 1
+		_, err = os.Open(paths2[index])
+		printError2(index, err)
+	}
+
+	{
+		index = 2
+		_, err = exec.LookPath(paths2[index])
+		printError2(index, err)
+	}
+
+	if f != nil {
+		f.Close()
+	}
 }
