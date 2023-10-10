@@ -1,47 +1,45 @@
 package main
 
 import (
+	"fmt"
 	"testing"
 )
 
-func Test_introduce(t *testing.T) {
-	tests := []struct {
-		name          string
-		wantIntroduce string
-	}{
-		// TODO: Add test cases.
+func TestHello(t *testing.T) {
+	var name string
+	greeting, err := hello(name)
+	if err == nil {
+		t.Errorf("The error is nil, but it should not be. (name=%q)",
+			name)
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if gotIntroduce := introduce(); gotIntroduce != tt.wantIntroduce {
-				t.Errorf("introduce() = %v, want %v", gotIntroduce, tt.wantIntroduce)
-			}
-		})
+	if greeting != "" {
+		t.Errorf("Nonempty greeting, but it should not be. (name=%q)",
+			name)
 	}
+	name = "Robert"
+	greeting, err = hello(name)
+	if err != nil {
+		t.Errorf("The error is not nil, but it should be. (name=%q)",
+			name)
+	}
+	if greeting == "" {
+		t.Errorf("Empty greeting, but it should not be. (name=%q)",
+			name)
+	}
+	expected := fmt.Sprintf("Hello, %s!", name)
+	if greeting != expected {
+		t.Errorf("The actual greeting %q is not the expected. (name=%q)",
+			greeting, name)
+	}
+	t.Logf("The expected greeting is %q.\n", expected)
 }
 
-func Test_hello(t *testing.T) {
-	type args struct {
-		name string
+func testIntroduce(t *testing.T) { // 请注意这个测试函数的名称。
+	intro := introduce()
+	expected := "Welcome to my Golang column."
+	if intro != expected {
+		t.Errorf("The actual introduce %q is not the expected.",
+			intro)
 	}
-	tests := []struct {
-		name         string
-		args         args
-		wantGreeting string
-		wantErr      bool
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			gotGreeting, err := hello(tt.args.name)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("hello() error = %v, wantErr %v", err, tt.wantErr)
-				return
-			}
-			if gotGreeting != tt.wantGreeting {
-				t.Errorf("hello() = %v, want %v", gotGreeting, tt.wantGreeting)
-			}
-		})
-	}
+	t.Logf("The expected introduce is %q.\n", expected)
 }
