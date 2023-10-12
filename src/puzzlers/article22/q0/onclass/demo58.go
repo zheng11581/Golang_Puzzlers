@@ -2,7 +2,9 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"io"
+	"log"
 	"sync"
 )
 
@@ -34,7 +36,44 @@ func main() {
 			defer func() {
 				sign <- struct{}{}
 			}()
+			for j := 1; j < max2; j++ {
+				// 准备数据。
+				header := fmt.Sprintf("\n[id: %d, iteration: %d]", id, j)
+
+				// 加锁
+				data := fmt.Sprintf(" %d", id*j)
+				if protecting > 0 {
+					mu.Lock()
+				}
+
+				// 开始写入数据
+				_, err := writer.Write([]byte(header))
+				if err != nil {
+					log.Printf("error: %s [%d]", err, id)
+				}
+				for k := 1; k < max3; k++ {
+					_, err := writer.Write([]byte(data))
+					if err != nil {
+						log.Printf("error: %s [%d]", err, id)
+					}
+				}
+
+				// 解锁
+				if protecting > 0 {
+					mu.Unlock()
+				}
+			}
 
 		}(i, &buffer)
 	}
+
+	for i := 1; i < max1; i++ {
+		<-sign
+	}
+
+	data, err := io.ReadAll(&buffer)
+	if err != nil {
+		log.Fatalf("fatal error: %s", err)
+	}
+	log.Printf("The contents: %s\n", data)
 }
