@@ -29,7 +29,7 @@ func main() {
 		mailbox = 1
 		log.Printf("sender [%d-%d]: the letter is sent.", id, index)
 		lock.Unlock()
-		recvCond.Broadcast()
+		recvCond.Broadcast() // 通知所有等待收信的goroutine
 
 	}
 
@@ -42,7 +42,7 @@ func main() {
 		mailbox = 0
 		log.Printf("receiver [%d-%d]: the letter is received.", id, index)
 		lock.RUnlock()
-		sendCond.Signal()
+		sendCond.Signal() // 确定只有一个发信的goroutine
 	}
 
 	// 收信、发信信号
