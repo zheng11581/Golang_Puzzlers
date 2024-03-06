@@ -25,3 +25,7 @@ func main() {
 func swap(a, b *int) {
 	*b, *a = *a, *b
 }
+
+//  1. go 里面只有值传递：所传递的是该参数的副本，是复制了一份的，本质上不能认为是一个东西，指向的不是一个内存地址
+// 非引用类型（值类型）：int，string，float，bool，数组和struct，传递的是副本的值
+// 引用类型：指针，slice，map，channel，接口，函数
