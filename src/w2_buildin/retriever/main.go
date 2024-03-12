@@ -50,11 +50,11 @@ func inspect(r Retriever) {
 
 func main() {
 	var r RetrieverPoster
+
+	// mockRetriever
 	r = &mock.Retriever{
 		Content: "this is a fake immoc.com",
 	}
-	//fmt.Println(download(r))
-	//fmt.Printf("%T %v\n", r, r)
 	inspect(r)
 	session(r)
 
@@ -65,12 +65,11 @@ func main() {
 		fmt.Println("not a mock retriever")
 	}
 
+	// realRetriever
 	r = &real.Retriever{
 		UserAgent: "Mozilla: 5.0",
 		TimeOut:   time.Minute,
 	}
-	//fmt.Println(download(r))
-	//fmt.Printf("%T %v\n", r, r)
 	inspect(r)
 	session(r)
 
