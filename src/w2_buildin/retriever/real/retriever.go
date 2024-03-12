@@ -11,6 +11,10 @@ type Retriever struct {
 	TimeOut   time.Duration
 }
 
+func (r *Retriever) Post(url string, form map[string]string) {
+	r.UserAgent = form["userAgent"]
+}
+
 func (r *Retriever) Get(url string) string {
 	resp, err := http.Get(url)
 	if err != nil {
