@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"time"
-	"zheng11581/learngo/lang/basic/struct/infra"
+	"zheng11581/learngo/lang/container/struct/infra"
 )
 
 func getRetriever() Retriever {
