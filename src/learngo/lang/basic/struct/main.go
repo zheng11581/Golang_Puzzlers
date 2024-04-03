@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"time"
-	"w2/struct/infra"
+	"zheng11581/learngo/lang/basic/struct/infra"
 )
 
 func getRetriever() Retriever {
