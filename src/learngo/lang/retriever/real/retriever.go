@@ -24,9 +24,6 @@ func (r *Retriever) Get(url string) string {
 	//body, err := io.ReadAll(resp.Body)
 	body, err := httputil.DumpResponse(resp, true)
 	if err != nil {
-		return ""
-	}
-	if err != nil {
 		panic(err)
 	}
 	return string(body)
