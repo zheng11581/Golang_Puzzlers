@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"time"
-	"w2/retriever/mock"
-	"w2/retriever/real"
+	"zheng11581/learngo/lang/retriever/mock"
+	"zheng11581/learngo/lang/retriever/real"
 )
 
 type Retriever interface {
