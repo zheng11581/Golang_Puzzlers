@@ -12,6 +12,7 @@ func add(a, b int) int {
 	return a + b
 }
 
+// 函数是一等公民：可以作为返回值、参数等传递
 func adder() func(int, int) int {
 	return func(a int, b int) int {
 		return a + b
