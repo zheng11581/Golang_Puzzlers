@@ -7,7 +7,7 @@ type Node struct {
 	Left, Right *Node
 }
 
-func (node Node) Print() {
+func (node *Node) Print() {
 	fmt.Print(node.Value, " ")
 }
 
