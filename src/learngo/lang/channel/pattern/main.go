@@ -7,22 +7,43 @@ import (
 )
 
 func main() {
-	m1 := msgGen("producer1")
-	m2 := msgGen("producer2")
-	m := finIn(m1, m2)
-	for {
-		fmt.Println(<-m)
+	done := make(chan struct{})
+
+	m1 := msgGen("producer1", done)
+	for i := 0; i < 5; i++ {
+		if msg, ok := timeoutWait(m1, time.Second); ok {
+			fmt.Println(msg)
+		} else {
+			fmt.Println("timeout")
+		}
 	}
+	// 通知任务退出
+	done <- struct{}{}
+	<-done
+
+	//shutdown channel
+	//shutdown := make(chan os.Signal, 1)
+	//select {}
+	//signal.Notify(shutdown, syscall.SIGINT, syscall.SIGTERM)
+	//<-shutdown
 
 }
 
 // 1. 生成器：服务、任务
-func msgGen(name string) chan string {
+func msgGen(name string, done chan struct{}) chan string {
 	c := make(chan string)
 	go func() {
 		for i := 0; ; i++ {
-			time.Sleep(time.Duration(rand.Intn(2000)) * time.Millisecond)
-			c <- fmt.Sprintf("service %s: message %d", name, i)
+			select {
+			case <-time.After(time.Duration(rand.Intn(5000)) * time.Millisecond):
+				c <- fmt.Sprintf("service %s: message %d", name, i)
+			case <-done:
+				fmt.Println("cleaning up")
+				time.Sleep(2 * time.Second)
+				fmt.Println("cleaning done")
+				done <- struct{}{}
+				return
+			}
 		}
 	}()
 	return c
@@ -56,4 +77,24 @@ func finInBySelect(c1 chan string, c2 chan string) chan string {
 
 	}()
 	return c
+}
+
+// 非阻塞等待
+func nonBlockWait(c chan string) (string, bool) {
+	select {
+	case m := <-c:
+		return m, true
+	default:
+		return "", false
+	}
+}
+
+// 超时等待
+func timeoutWait(c chan string, timeout time.Duration) (string, bool) {
+	select {
+	case m := <-c:
+		return m, true
+	case <-time.After(2000 * time.Millisecond):
+		return "", false
+	}
 }
