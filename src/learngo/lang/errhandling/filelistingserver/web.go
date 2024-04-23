@@ -12,11 +12,8 @@ import (
 type appHandler func(writer http.ResponseWriter,
 	request *http.Request) error
 
-func errWrapper(
-	handler appHandler) func(
-	http.ResponseWriter, *http.Request) {
-	return func(writer http.ResponseWriter,
-		request *http.Request) {
+func errWrapper(handler appHandler) func(http.ResponseWriter, *http.Request) {
+	return func(writer http.ResponseWriter, request *http.Request) {
 		// panic
 		defer func() {
 			if r := recover(); r != nil {

@@ -20,11 +20,9 @@ func (e userError) Message() string {
 	return string(e)
 }
 
-func HandleFileList(writer http.ResponseWriter,
-	request *http.Request) error {
+func HandleFileList(writer http.ResponseWriter, request *http.Request) error {
 	fmt.Println()
-	if strings.Index(
-		request.URL.Path, prefix) != 0 {
+	if strings.Index(request.URL.Path, prefix) != 0 {
 		return userError(
 			fmt.Sprintf("path %s must start "+
 				"with %s",
