@@ -16,6 +16,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	// middleware
 	r.Use(func(context *gin.Context) {
 		start := time.Now()
 		context.Next()
@@ -32,6 +34,7 @@ func main() {
 	},
 	)
 
+	// router
 	r.GET("/ping", func(context *gin.Context) {
 		h := gin.H{
 			"message": "pong",
