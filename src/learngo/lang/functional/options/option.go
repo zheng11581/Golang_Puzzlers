@@ -32,9 +32,9 @@ func WithPort(port int) Option {
 
 // NewServer Option模式来创建 Server实例
 func NewServer(options ...Option) *Server {
-	cfg := &Server{}
+	server := &Server{}
 	for _, option := range options {
-		option(cfg)
+		option(server)
 	}
-	return cfg
+	return server
 }
