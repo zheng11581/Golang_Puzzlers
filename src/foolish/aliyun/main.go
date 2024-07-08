@@ -6,12 +6,12 @@ import (
 )
 
 func main() {
-	client, err := oss.New("endpoint", "", "")
+	client, err := oss.New("endpoint", "AK", "AKS")
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	bucket, err := client.Bucket("ncc-yc-cpumall-ec")
+	bucket, err := client.Bucket("BUCKET")
 	if err != nil {
 		log.Fatalln(err)
 	}
