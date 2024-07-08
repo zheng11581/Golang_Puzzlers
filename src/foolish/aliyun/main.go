@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	client, err := oss.New("endpoint", "AK", "AKS")
+	client, err := oss.New("ENDPOINTS", "AK", "AKS")
 	if err != nil {
 		log.Fatalln(err)
 	}
