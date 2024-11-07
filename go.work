@@ -4,4 +4,6 @@ use (
 	./src/puzzlers
 	./src/learngo
 	./src/foolish
+	./src/foolish/huaweiyun/obs
+	./src/foolish/gorm
 )
