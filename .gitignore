@@ -16,3 +16,5 @@ pkg/
 # IDE
 .idea/
 .vscode/
+
+...vendor
